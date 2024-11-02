@@ -9,16 +9,14 @@ import {
   FormMessage,
 } from "@/components/shared/form";
 import { Input } from "@/components/shared/input";
+import { IErrorResponse } from "@/model/general-type";
+import { AuthApi } from "@/repository/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { AuthApi } from "@/repository/services/auth-service";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { IErrorResponse } from "@/model/general-type";
-import { ILoginPayload } from "@/model/auth-type";
+import { z } from "zod";
 
 const registerFormSchema = z.object({
   username: z.string().min(1, { message: "Username tidak boleh kosong" }),

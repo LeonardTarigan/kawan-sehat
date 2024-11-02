@@ -1,6 +1,6 @@
 "use client";
 
-import { IUserAccount } from "@/model/auth-type";
+import { IUserAccount } from "@/model/user-type";
 import Cookie from "js-cookie";
 
 export default function useUserAccount() {

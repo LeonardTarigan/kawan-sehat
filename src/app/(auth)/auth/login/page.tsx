@@ -60,14 +60,14 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="z-0 flex h-screen flex-col justify-between gap-5 overflow-hidden px-5 pb-20 pt-10">
+    <main className="z-0 flex h-screen flex-col justify-between gap-5 overflow-hidden px-5 pb-20 pt-10 lg:overflow-auto">
       <h1 className="text-center text-xl font-medium">
         Mulai hidup sehat bersama <br />{" "}
         <span className="text-3xl font-bold text-primary-500">KawanSehat</span>
       </h1>
 
       <div>
-        <div className="relative -z-10 aspect-[6/5] w-[125vw] shrink-0 -translate-x-16 translate-y-10 border-2">
+        <div className="relative -z-10 aspect-[6/5] w-[125vw] max-w-[500px] shrink-0 -translate-x-16 translate-y-10">
           <Image
             src={"/img/login-image.png"}
             alt="Illustration"
