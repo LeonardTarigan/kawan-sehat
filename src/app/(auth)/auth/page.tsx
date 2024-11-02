@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function AuthPage() {
   return (
-    <main className="flex h-screen flex-col items-center justify-center gap-5 border-x p-5">
+    <main className="flex h-screen flex-col items-center justify-center gap-5 p-5">
       <div className="relative aspect-[3/4] w-full shrink-0">
         <Image src={"/img/auth-image.png"} alt="Illustration" fill priority />
       </div>

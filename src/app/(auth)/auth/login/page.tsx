@@ -6,14 +6,16 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/shared/form";
 import { Input } from "@/components/shared/input";
+import { AuthApi } from "@/repository/service-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Cookie from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const loginFormSchema = z.object({
   username: z.string().min(1, { message: "Username tidak boleh kosong" }),
@@ -23,6 +25,8 @@ const loginFormSchema = z.object({
 type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const form = useForm<LoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -31,8 +35,13 @@ export default function LoginPage() {
     },
   });
 
-  function onSubmit(values: LoginFormSchema) {
-    console.log(values);
+  async function onSubmit(values: LoginFormSchema) {
+    const { data } = await AuthApi.login(values);
+
+    Cookie.set("token", data.token);
+    Cookie.set("user", JSON.stringify(data.account));
+
+    router.push("/");
   }
 
   return (
@@ -44,7 +53,12 @@ export default function LoginPage() {
 
       <div>
         <div className="relative -z-10 aspect-[6/5] w-[125vw] shrink-0 -translate-x-16 translate-y-10 border-2">
-          <Image src={"/img/login-image.png"} alt="Illustration" fill />
+          <Image
+            src={"/img/login-image.png"}
+            alt="Illustration"
+            fill
+            priority
+          />
         </div>
         <Form {...form}>
           <form
