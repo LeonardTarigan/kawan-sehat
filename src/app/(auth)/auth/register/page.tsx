@@ -13,6 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { AuthApi } from "@/repository/services/auth-service";
+import toast from "react-hot-toast";
+import { IErrorResponse } from "@/model/general-type";
+import { ILoginPayload } from "@/model/auth-type";
 
 const registerFormSchema = z.object({
   username: z.string().min(1, { message: "Username tidak boleh kosong" }),
@@ -26,6 +32,8 @@ const registerFormSchema = z.object({
 type RegisterFormSchema = z.infer<typeof registerFormSchema>;
 
 export default function RegisterPage() {
+  const router = useRouter();
+
   const form = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -35,8 +43,21 @@ export default function RegisterPage() {
     },
   });
 
-  function onSubmit(values: RegisterFormSchema) {
-    console.log(values);
+  async function onSubmit(values: RegisterFormSchema) {
+    try {
+      await AuthApi.register(values);
+
+      toast.success("Registrasi akun berhasil");
+
+      router.push("/auth/login");
+    } catch (err) {
+      if (err && typeof err === "object" && "response" in err) {
+        const error = err as IErrorResponse;
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Gagal mendaftarkan akun");
+      }
+    }
   }
 
   return (

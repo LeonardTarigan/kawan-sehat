@@ -1,13 +1,4 @@
-export interface IUserAccount {
-  id: string;
-  full_name: string;
-  username: string;
-  nik: string;
-  email: string;
-  gender: string;
-  role: string;
-  avatar: string;
-}
+import { IUserAccount } from "./user-type";
 
 export interface IAuthResponse {
   account: IUserAccount;
@@ -16,5 +7,11 @@ export interface IAuthResponse {
 
 export interface ILoginPayload {
   username: string;
+  password: string;
+}
+
+export interface IRegisterPayload {
+  username: string;
+  email: string;
   password: string;
 }

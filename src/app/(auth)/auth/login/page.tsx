@@ -9,13 +9,15 @@ import {
   FormMessage,
 } from "@/components/shared/form";
 import { Input } from "@/components/shared/input";
-import { AuthApi } from "@/repository/service-auth";
+import { IErrorResponse } from "@/model/general-type";
+import { AuthApi } from "@/repository/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Cookies from "js-cookie";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
 
 const loginFormSchema = z.object({
   username: z.string().min(1, { message: "Username tidak boleh kosong" }),
@@ -36,12 +38,25 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: LoginFormSchema) {
-    const { data } = await AuthApi.login(values);
+    try {
+      const { data, error } = await AuthApi.login(values);
 
-    Cookie.set("token", data.token);
-    Cookie.set("user", JSON.stringify(data.account));
+      if (error) {
+        toast.error(error);
+      }
 
-    router.push("/");
+      Cookies.set("token", data.token);
+      Cookies.set("user", JSON.stringify(data.account));
+
+      router.push("/");
+    } catch (err) {
+      if (err && typeof err === "object" && "response" in err) {
+        const error = err as IErrorResponse;
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Username atau password salah!");
+      }
+    }
   }
 
   return (
