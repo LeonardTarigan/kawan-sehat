@@ -1,5 +1,5 @@
 import { IPagination } from "./general-type";
-import { UserAvatar } from "./user-type";
+import { UserAvatar, UserRole } from "./user-type";
 
 export type VoteState = -1 | 0 | 1;
 
@@ -7,6 +7,7 @@ export interface IPostAccount {
   id: string;
   username: string;
   avatar: UserAvatar;
+  role: UserRole;
 }
 
 export interface IPostTopic {

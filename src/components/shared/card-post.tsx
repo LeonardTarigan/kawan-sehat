@@ -7,10 +7,15 @@ import useMutateDownvotePost from "@/hooks/api/posts/useMutateDownvotePost";
 import useMutateVotePost from "@/hooks/api/posts/useMutateVotePost";
 import useQueryPostsComments from "@/hooks/api/posts/useQueryPostComments";
 import useLineLimit from "@/hooks/useLineLimit";
-import { UserAvatar } from "@/model/user-type";
+import { UserAvatar, UserRole } from "@/model/user-type";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
-import { Bookmark, MessageSquareIcon } from "lucide-react";
+import {
+  Bookmark,
+  MessageSquareIcon,
+  ShieldPlusIcon,
+  WrenchIcon,
+} from "lucide-react";
 import Image from "next/image";
 import { FormEvent, useState } from "react";
 import { Button } from "./button";
@@ -32,6 +37,7 @@ interface ICardPost {
   vote_status: number;
   avatar: UserAvatar;
   is_bookmarked: boolean;
+  role: UserRole;
 }
 
 export default function CardPost({
@@ -46,6 +52,7 @@ export default function CardPost({
   vote_status,
   avatar,
   is_bookmarked,
+  role,
 }: ICardPost) {
   const [showFullContent, setShowFullContent] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
@@ -87,7 +94,23 @@ export default function CardPost({
           </div>
         )}
         <div>
-          <p className="text-base font-medium text-primary-500">@{username}</p>
+          <div className="text-base font-medium text-primary-500">
+            <div className="flex items-center gap-1">
+              <p>@{username}</p>
+              {role === "EXPERT" && (
+                <div className="flex items-center gap-1 rounded-full bg-sky-500 px-3 text-[10px] font-medium text-white">
+                  <ShieldPlusIcon size={15} />
+                  <p>Expert</p>
+                </div>
+              )}
+              {role === "ADMIN" && (
+                <div className="flex items-center gap-1 rounded-full bg-emerald-500 px-3 text-[10px] font-medium text-white">
+                  <WrenchIcon size={12} />
+                  <p>Mod</p>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="text-slate-400">
             {topic_name} • {dayjs(created_at).fromNow()}
           </div>
@@ -166,7 +189,7 @@ export default function CardPost({
           </form>
           <div className="mt-2 space-y-3">
             {data?.data.comments.map(
-              ({ id, content, account, created_at, total_replies, vote }) => (
+              ({ id, content, account, created_at, total_replies }) => (
                 <PostComment
                   key={id}
                   id={id}
@@ -174,6 +197,8 @@ export default function CardPost({
                   username={account.username}
                   created_at={created_at}
                   total_replies={total_replies}
+                  role={account.role}
+                  avatar={account.avatar}
                 />
               ),
             )}
