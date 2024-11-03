@@ -29,3 +29,9 @@ export interface IPost {
 export interface IPostList extends IPagination {
   posts: IPost[];
 }
+
+export interface ICreatePostPayload {
+  topic_id: string;
+  title: string;
+  content: string;
+}

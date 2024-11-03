@@ -1,6 +1,7 @@
 "use server";
 
 import { IResponse } from "@/model/general-type";
+import { ICreatePostPayload } from "@/model/post-type";
 import { ITopicList } from "@/model/topic-type";
 import { cookies } from "next/headers";
 
@@ -21,6 +22,26 @@ export async function getAllTopics(
       },
     },
   );
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}
+
+export async function createPost(payload: ICreatePostPayload) {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(baseUrl + "/posts", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!res.ok) {
     throw new Error(`Error ${res.status}: ${res.statusText}`);
