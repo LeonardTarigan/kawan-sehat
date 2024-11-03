@@ -1,6 +1,7 @@
 import useQueryTopics from "@/hooks/api/topics/useQueryTopics";
 import AlertError from "../shared/alert-error";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Link from "next/link";
 
 export default function SectionTopics() {
   const { data, isLoading, isError } = useQueryTopics();
@@ -29,11 +30,13 @@ export default function SectionTopics() {
       <Swiper spaceBetween={10} slidesPerView={"auto"} freeMode={true}>
         {data.data.topics.map(({ id, name }, index) => (
           <SwiperSlide key={id} className="!w-auto">
-            <div
-              className={`select-none whitespace-nowrap rounded-full bg-white px-5 py-2 text-sm ${index === 0 && "ml-5"} ${index === data.data.topics.length - 1 && "mr-5"}`}
-            >
-              {name}
-            </div>
+            <Link href={`/topic/${id}`}>
+              <div
+                className={`select-none whitespace-nowrap rounded-full bg-white px-5 py-2 text-sm ${index === 0 && "ml-5"} ${index === data.data.topics.length - 1 && "mr-5"}`}
+              >
+                {name}
+              </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
