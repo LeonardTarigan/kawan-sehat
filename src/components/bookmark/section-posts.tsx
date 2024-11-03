@@ -64,6 +64,7 @@ export default function SectionPosts() {
               vote_status={vote.state}
               avatar={account.avatar}
               is_bookmarked={is_bookmarked}
+              role={account.role}
             />
           ),
         )}

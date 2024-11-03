@@ -68,12 +68,7 @@ export default function LoginPage() {
 
       <div>
         <div className="relative -z-10 aspect-[6/5] w-[125vw] max-w-[500px] shrink-0 -translate-x-16 translate-y-10">
-          <Image
-            src={"/img/login-image.png"}
-            alt="Illustration"
-            fill
-            priority
-          />
+          <Image src={"/img/login-image.png"} alt="Illustration" fill />
         </div>
         <Form {...form}>
           <form

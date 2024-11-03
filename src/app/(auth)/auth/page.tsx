@@ -6,7 +6,7 @@ export default function AuthPage() {
   return (
     <main className="flex h-screen flex-col items-center justify-center gap-5 overflow-hidden p-5 lg:overflow-auto">
       <div className="relative aspect-[3/4] w-full shrink-0">
-        <Image src={"/img/auth-image.png"} alt="Illustration" fill priority />
+        <Image src={"/img/auth-image.png"} alt="Illustration" fill />
       </div>
       <div className="flex w-full flex-col gap-2">
         <Link href={"/auth/login"}>
