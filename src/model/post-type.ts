@@ -49,6 +49,10 @@ export interface IPostCommentList extends IPagination {
   comments: IPostComment[];
 }
 
+export interface IPostCommentReplyList extends IPagination {
+  replys: IPostComment[];
+}
+
 export interface ICreatePostPayload {
   topic_id: string;
   title: string;
@@ -57,5 +61,10 @@ export interface ICreatePostPayload {
 
 export interface ICreateCommentPayload {
   post_id: string;
+  content: string;
+}
+
+export interface ICreateCommentReplyPayload {
+  comment_id: string;
   content: string;
 }

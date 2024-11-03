@@ -19,6 +19,8 @@ import useLineLimit from "@/hooks/useLineLimit";
 import useMutateDeleteBookmark from "@/hooks/api/bookmarks/useMutateDeleteBookmark";
 import useQueryPostsComments from "@/hooks/api/posts/useQueryPostComments";
 import PostComment from "./post-comment";
+import useMutateCreatePostComment from "@/hooks/api/posts/useMutateCreatePostComment";
+import { Input } from "./input";
 
 dayjs.extend(relativeTime);
 dayjs.locale("id");
@@ -52,6 +54,7 @@ export default function CardPost({
 }: ICardPost) {
   const [showFullContent, setShowFullContent] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [comment, setComment] = useState("");
 
   const handleSwitchFullContent = () => setShowFullContent((prev) => !prev);
   const handleSwitchCommentOpen = () => setIsCommentOpen((prev) => !prev);
@@ -61,16 +64,22 @@ export default function CardPost({
   const { mutate: votePost } = useMutateVotePost();
   const { mutate: downvotePost } = useMutateDownvotePost();
 
+  const { data } = useQueryPostsComments(id);
+  const { mutate } = useMutateCreatePostComment(id);
+
+  const handleComment = (e: FormEvent) => {
+    e.preventDefault();
+    mutate({
+      post_id: id,
+      content: comment,
+    });
+    setComment("");
+  };
+
   const { contentExceedsLimit, contentRef } = useLineLimit(content);
 
   const handleBookmark = () =>
     is_bookmarked ? deleteBookmark(id) : createBookmark(id);
-
-  const handleComment = (e: FormEvent) => {
-    e.preventDefault();
-
-    console.log("submitted");
-  };
 
   return (
     <div className="rounded-xl bg-white p-5 text-sm">
@@ -151,7 +160,31 @@ export default function CardPost({
         </button>
       </div>
 
-      {isCommentOpen && <PostComment id={id} />}
+      {isCommentOpen && (
+        <div className="mt-3">
+          <form onSubmit={handleComment}>
+            <Input
+              placeholder="Tambahkan komentar"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+          </form>
+          <div className="mt-2 space-y-3">
+            {data?.data.comments.map(
+              ({ id, content, account, created_at, total_replies, vote }) => (
+                <PostComment
+                  key={id}
+                  id={id}
+                  content={content}
+                  username={account.username}
+                  created_at={created_at}
+                  total_replies={total_replies}
+                />
+              ),
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

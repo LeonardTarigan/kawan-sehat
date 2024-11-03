@@ -3,8 +3,10 @@
 import { IResponse } from "@/model/general-type";
 import {
   ICreateCommentPayload,
+  ICreateCommentReplyPayload,
   ICreatePostPayload,
   IPostCommentList,
+  IPostCommentReplyList,
   IPostList,
 } from "@/model/post-type";
 import { cookies } from "next/headers";
@@ -160,6 +162,54 @@ export async function createPostComment(payload: ICreateCommentPayload) {
   const token = (await cookies()).get("token")?.value;
 
   const res = await fetch(baseUrl + "/comments", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}
+
+export async function getAllPostCommentReplies(
+  id: string,
+  query?: Record<string, string>,
+): Promise<IResponse<IPostCommentReplyList>> {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(
+    baseUrl +
+      `/comments/${id}/replies?${new URLSearchParams(query).toString()}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}
+
+export async function createPostCommentReply(
+  payload: ICreateCommentReplyPayload,
+) {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(baseUrl + "/replies", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
