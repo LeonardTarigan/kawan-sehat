@@ -1,19 +1,18 @@
 "use server";
 
 import { IResponse } from "@/model/general-type";
-import { ICreatePostPayload } from "@/model/post-type";
-import { ITopicList } from "@/model/topic-type";
+import { IPostList } from "@/model/post-type";
 import { cookies } from "next/headers";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
-export async function getAllTopics(
+export async function getAllBookmarks(
   query?: Record<string, string>,
-): Promise<IResponse<ITopicList>> {
+): Promise<IResponse<IPostList>> {
   const token = (await cookies()).get("token")?.value;
 
   const res = await fetch(
-    baseUrl + `/topics?${new URLSearchParams(query).toString()}`,
+    baseUrl + `/users/bookmarks?${new URLSearchParams(query).toString()}`,
     {
       method: "GET",
       headers: {

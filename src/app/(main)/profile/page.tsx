@@ -1,21 +1,16 @@
 "use client";
 
 import { Button } from "@/components/shared/button";
-import useMounted from "@/hooks/useMounted";
-import useUserAccount from "@/hooks/useUserAccount";
-import {
-  ClipboardPlusIcon,
-  LogOutIcon,
-  UserRoundIcon,
-  UserRoundPenIcon,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import useQueryPosts from "@/hooks/api/posts/useQueryPosts";
 import CardPost from "@/components/shared/card-post";
 import DefaultUserIcon from "@/components/shared/default-user-icon";
+import useQueryPosts from "@/hooks/api/posts/useQueryPosts";
+import useMounted from "@/hooks/useMounted";
+import useUserAccount from "@/hooks/useUserAccount";
+import Cookies from "js-cookie";
+import { ClipboardPlusIcon, LogOutIcon, UserRoundPenIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const isMounted = useMounted();
@@ -100,6 +95,7 @@ export default function ProfilePage() {
               <CardPost
                 key={id}
                 title={title}
+                id={id}
                 username={account.username}
                 content={content}
                 total_comment={total_comments}

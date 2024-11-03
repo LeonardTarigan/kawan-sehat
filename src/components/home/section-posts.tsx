@@ -40,6 +40,7 @@ export default function SectionPosts() {
           <CardPost
             key={id}
             title={title}
+            id={id}
             username={account.username}
             content={content}
             total_comment={total_comments}

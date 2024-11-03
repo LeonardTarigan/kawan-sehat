@@ -11,11 +11,13 @@ import "dayjs/locale/id";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
 import AutoExpandingTextarea from "./auto-expanding-textarea";
+import useMutateCreateBookmark from "@/hooks/api/bookmarks/useMutateCreateBookmark";
 
 dayjs.extend(relativeTime);
 dayjs.locale("id");
 
 interface ICardPost {
+  id: string;
   title: string;
   username: string;
   content: string;
@@ -25,6 +27,7 @@ interface ICardPost {
 }
 
 export default function CardPost({
+  id,
   title,
   content,
   username,
@@ -37,6 +40,8 @@ export default function CardPost({
 
   const handleSwitchFullContent = () => setShowFullContent((prev) => !prev);
   const handleSwitchCommentOpen = () => setIsCommentOpen((prev) => !prev);
+
+  const { mutate } = useMutateCreateBookmark();
 
   return (
     <div className="rounded-xl bg-white p-5 text-sm">
@@ -73,7 +78,10 @@ export default function CardPost({
           <MessageSquareIcon className="size-4" />
           <span>{total_comment}</span>
         </button>
-        <button className="rounded-full bg-primary-50 p-1 px-4">
+        <button
+          onClick={() => mutate(id)}
+          className="rounded-full bg-primary-50 p-1 px-4"
+        >
           <Bookmark className="size-4" />
         </button>
       </div>

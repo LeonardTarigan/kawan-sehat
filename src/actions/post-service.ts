@@ -1,7 +1,7 @@
 "use server";
 
 import { IResponse } from "@/model/general-type";
-import { IPostList } from "@/model/post-type";
+import { ICreatePostPayload, IPostList } from "@/model/post-type";
 import { cookies } from "next/headers";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL as string;
@@ -21,6 +21,45 @@ export async function getAllPosts(
       },
     },
   );
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}
+
+export async function createPost(payload: ICreatePostPayload) {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(baseUrl + "/posts", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}
+
+export async function createPostBookmark(id: string) {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(baseUrl + `/posts/${id}/mark`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!res.ok) {
     throw new Error(`Error ${res.status}: ${res.statusText}`);
