@@ -46,19 +46,16 @@ export default function AddPostPage() {
   const { mutate } = useMutateCreatePost();
 
   async function onSubmit(values: CreatePostFormSchema) {
-    mutate(values);
-    form.reset();
+    mutate(values, { onSuccess: () => form.reset() });
   }
 
   if (isLoading)
     return (
-      <div className="flex gap-2 px-5">
-        {[...Array(3)].map((_, index) => (
-          <div
-            key={index}
-            className="h-8 w-full animate-pulse rounded-full bg-slate-200"
-          ></div>
-        ))}
+      <div className="flex flex-col gap-2 p-5">
+        <div className="mb-10 h-10 w-32 animate-pulse rounded-lg bg-slate-200"></div>
+        <div className="h-10 w-full animate-pulse rounded-lg bg-slate-200"></div>
+        <div className="h-10 w-full animate-pulse rounded-lg bg-slate-200"></div>
+        <div className="h-32 w-full animate-pulse rounded-lg bg-slate-200"></div>
       </div>
     );
 
@@ -121,8 +118,8 @@ export default function AddPostPage() {
                 <FormControl>
                   <AutoExpandingTextarea
                     placeholder="Deskripsi"
-                    initialRows={3}
-                    maxRows={7}
+                    initialRows={7}
+                    maxRows={12}
                     {...field}
                   />
                 </FormControl>

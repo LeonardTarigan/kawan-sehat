@@ -1,7 +1,7 @@
 import { createPost } from "@/actions/post-service";
 import { ICreatePostPayload } from "@/model/post-type";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function useMutateCreatePost() {
