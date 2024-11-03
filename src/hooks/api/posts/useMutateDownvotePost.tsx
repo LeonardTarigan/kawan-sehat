@@ -1,4 +1,4 @@
-import { downVotePost, votePost } from "@/actions/post-service";
+import { downVotePost } from "@/actions/post-service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 

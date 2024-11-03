@@ -3,7 +3,7 @@
 import { Bookmark, MessageSquareIcon } from "lucide-react";
 import ArrowDownIcon from "./icons/arrow-down-icon";
 import ArrowUpIcon from "./icons/arrow-up-icon";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, FormEvent } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/id";
@@ -17,6 +17,8 @@ import DefaultUserIcon from "./default-user-icon";
 import Image from "next/image";
 import useLineLimit from "@/hooks/useLineLimit";
 import useMutateDeleteBookmark from "@/hooks/api/bookmarks/useMutateDeleteBookmark";
+import useQueryPostsComments from "@/hooks/api/posts/useQueryPostComments";
+import PostComment from "./post-comment";
 
 dayjs.extend(relativeTime);
 dayjs.locale("id");
@@ -63,6 +65,12 @@ export default function CardPost({
 
   const handleBookmark = () =>
     is_bookmarked ? deleteBookmark(id) : createBookmark(id);
+
+  const handleComment = (e: FormEvent) => {
+    e.preventDefault();
+
+    console.log("submitted");
+  };
 
   return (
     <div className="rounded-xl bg-white p-5 text-sm">
@@ -143,11 +151,7 @@ export default function CardPost({
         </button>
       </div>
 
-      {isCommentOpen && (
-        <div className="mt-3">
-          <AutoExpandingTextarea placeholder="Tambahkan komentar" maxRows={4} />
-        </div>
-      )}
+      {isCommentOpen && <PostComment id={id} />}
     </div>
   );
 }

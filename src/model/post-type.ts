@@ -31,12 +31,31 @@ export interface IPost {
   created_at: string;
 }
 
+export interface IPostComment {
+  id: string;
+  post_id: string;
+  account: IPostAccount;
+  vote: IPostVote;
+  total_replies: number;
+  content: string;
+  created_at: string;
+}
+
 export interface IPostList extends IPagination {
   posts: IPost[];
+}
+
+export interface IPostCommentList extends IPagination {
+  comments: IPostComment[];
 }
 
 export interface ICreatePostPayload {
   topic_id: string;
   title: string;
+  content: string;
+}
+
+export interface ICreateCommentPayload {
+  post_id: string;
   content: string;
 }
