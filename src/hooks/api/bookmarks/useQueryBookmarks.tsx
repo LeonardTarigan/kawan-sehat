@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function useQueryBookmarks(query?: Record<string, string>) {
   const res = useQuery({
-    queryKey: ["bookmark"],
+    queryKey: ["bookmarks"],
     queryFn: async () => {
       const res = await getAllBookmarks(query);
       return res;

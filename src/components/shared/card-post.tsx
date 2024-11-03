@@ -15,6 +15,8 @@ import { Button } from "./button";
 import { UserAvatar } from "@/model/user-type";
 import DefaultUserIcon from "./default-user-icon";
 import Image from "next/image";
+import useLineLimit from "@/hooks/useLineLimit";
+import useMutateDeleteBookmark from "@/hooks/api/bookmarks/useMutateDeleteBookmark";
 
 dayjs.extend(relativeTime);
 dayjs.locale("id");
@@ -30,6 +32,7 @@ interface ICardPost {
   vote_total: number;
   vote_status: number;
   avatar: UserAvatar;
+  is_bookmarked: boolean;
 }
 
 export default function CardPost({
@@ -43,39 +46,23 @@ export default function CardPost({
   vote_total,
   vote_status,
   avatar,
+  is_bookmarked,
 }: ICardPost) {
   const [showFullContent, setShowFullContent] = useState(false);
   const [isCommentOpen, setIsCommentOpen] = useState(false);
-  const [contentExceedsLimit, setContentExceedsLimit] = useState(false);
-  const contentRef = useRef<HTMLParagraphElement>(null);
 
   const handleSwitchFullContent = () => setShowFullContent((prev) => !prev);
   const handleSwitchCommentOpen = () => setIsCommentOpen((prev) => !prev);
 
   const { mutate: createBookmark } = useMutateCreateBookmark();
+  const { mutate: deleteBookmark } = useMutateDeleteBookmark();
   const { mutate: votePost } = useMutateVotePost();
   const { mutate: downvotePost } = useMutateDownvotePost();
 
-  useEffect(() => {
-    const checkContentHeight = () => {
-      if (contentRef.current) {
-        const lineHeight = parseInt(
-          window.getComputedStyle(contentRef.current).lineHeight,
-        );
-        const contentHeight = contentRef.current.scrollHeight;
-        const fourLinesHeight = lineHeight * 4;
+  const { contentExceedsLimit, contentRef } = useLineLimit(content);
 
-        setContentExceedsLimit(contentHeight > fourLinesHeight);
-      }
-    };
-
-    checkContentHeight();
-    window.addEventListener("resize", checkContentHeight);
-
-    return () => {
-      window.removeEventListener("resize", checkContentHeight);
-    };
-  }, [content]);
+  const handleBookmark = () =>
+    is_bookmarked ? deleteBookmark(id) : createBookmark(id);
 
   return (
     <div className="rounded-xl bg-white p-5 text-sm">
@@ -94,7 +81,7 @@ export default function CardPost({
           </div>
         </div>
       </div>
-      <h3 className="text-base font-semibold">{title}</h3>
+      <h3 className="text-base font-semibold leading-tight">{title}</h3>
 
       <p
         ref={contentRef}
@@ -147,10 +134,12 @@ export default function CardPost({
           <span>{total_comment}</span>
         </button>
         <button
-          onClick={() => createBookmark(id)}
+          onClick={handleBookmark}
           className="rounded-full bg-primary-50 p-1 px-4 transition-colors duration-150 hover:bg-primary-100"
         >
-          <Bookmark className="size-4" />
+          <Bookmark
+            className={`size-4 ${is_bookmarked && "fill-primary-500"}`}
+          />
         </button>
       </div>
 

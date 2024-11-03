@@ -27,6 +27,7 @@ export interface IPost {
   total_comments: number;
   title: string;
   content: string;
+  is_bookmarked: boolean;
   created_at: string;
 }
 

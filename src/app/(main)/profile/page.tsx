@@ -91,6 +91,7 @@ export default function ProfilePage() {
               vote,
               topic,
               created_at,
+              is_bookmarked,
             }) => (
               <CardPost
                 key={id}
@@ -104,6 +105,7 @@ export default function ProfilePage() {
                 vote_total={vote.total}
                 vote_status={vote.state}
                 avatar={account.avatar}
+                is_bookmarked={is_bookmarked}
               />
             ),
           )}

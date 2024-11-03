@@ -49,6 +49,7 @@ export default function SectionPosts() {
             vote,
             topic,
             created_at,
+            is_bookmarked,
           }) => (
             <CardPost
               key={id}
@@ -62,6 +63,7 @@ export default function SectionPosts() {
               vote_total={vote.total}
               vote_status={vote.state}
               avatar={account.avatar}
+              is_bookmarked={is_bookmarked}
             />
           ),
         )}

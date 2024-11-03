@@ -69,6 +69,25 @@ export async function createPostBookmark(id: string) {
   return data;
 }
 
+export async function deletePostBookmark(id: string) {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(baseUrl + `/posts/${id}/unmark`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}
+
 export async function votePost(id: string) {
   const token = (await cookies()).get("token")?.value;
 
