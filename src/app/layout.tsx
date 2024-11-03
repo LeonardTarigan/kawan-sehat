@@ -3,6 +3,8 @@ import { rubik } from "@/lib/fonts";
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import "swiper/css";
+import "swiper/css/free-mode";
 
 export const metadata: Metadata = {
   title: "Kawan Sehat",

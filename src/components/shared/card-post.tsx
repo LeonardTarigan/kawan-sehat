@@ -8,6 +8,9 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/id";
+import { Input } from "./input";
+import { Textarea } from "./textarea";
+import AutoExpandingTextarea from "./auto-expanding-textarea";
 
 dayjs.extend(relativeTime);
 dayjs.locale("id");
@@ -30,25 +33,27 @@ export default function CardPost({
   created_at,
 }: ICardPost) {
   const [showFullContent, setShowFullContent] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
 
   const handleSwitchFullContent = () => setShowFullContent((prev) => !prev);
+  const handleSwitchCommentOpen = () => setIsCommentOpen((prev) => !prev);
 
   return (
     <div className="rounded-xl bg-white p-5 text-sm">
       <p className="text-base font-medium text-primary-500">@{username}</p>
-      <h3 className="text-base font-bold">{title}</h3>
       <div className="text-slate-400">
         {topic_name} • {dayjs(created_at).fromNow()}
       </div>
+      <h3 className="text-base font-semibold">{title}</h3>
 
       <p className={`mt-2 ${!showFullContent && "line-clamp-4"}`}>{content}</p>
       <Button
         onClick={handleSwitchFullContent}
-        variant={"ghost"}
+        variant={"link"}
         size={"sm"}
         className="px-0 text-sm font-normal text-slate-400"
       >
-        Lihat {showFullContent ? "lebih sedikt" : "selengkapnya"}
+        Lihat {showFullContent ? "lebih sedikit" : "selengkapnya"}
       </Button>
 
       <div className="mt-5 flex items-center gap-2 text-primary-500">
@@ -61,7 +66,10 @@ export default function CardPost({
             <ArrowDownIcon className="size-4" />
           </button>
         </div>
-        <button className="flex items-center justify-center gap-1 rounded-full bg-primary-50 px-4 py-1">
+        <button
+          onClick={handleSwitchCommentOpen}
+          className="flex items-center justify-center gap-1 rounded-full bg-primary-50 px-4 py-1"
+        >
           <MessageSquareIcon className="size-4" />
           <span>{total_comment}</span>
         </button>
@@ -70,7 +78,11 @@ export default function CardPost({
         </button>
       </div>
 
-      <div></div>
+      {isCommentOpen && (
+        <div className="mt-3">
+          <AutoExpandingTextarea placeholder="Tambahkan komentar" maxRows={4} />
+        </div>
+      )}
     </div>
   );
 }
