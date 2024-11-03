@@ -1,29 +1,24 @@
 "use client";
 
+import useMutateCreateBookmark from "@/hooks/api/bookmarks/useMutateCreateBookmark";
+import useMutateDeleteBookmark from "@/hooks/api/bookmarks/useMutateDeleteBookmark";
+import useMutateCreatePostComment from "@/hooks/api/posts/useMutateCreatePostComment";
+import useMutateDownvotePost from "@/hooks/api/posts/useMutateDownvotePost";
+import useMutateVotePost from "@/hooks/api/posts/useMutateVotePost";
+import useQueryPostsComments from "@/hooks/api/posts/useQueryPostComments";
+import useLineLimit from "@/hooks/useLineLimit";
+import { UserAvatar } from "@/model/user-type";
+import dayjs from "dayjs";
+import "dayjs/locale/id";
 import { Bookmark, MessageSquareIcon } from "lucide-react";
+import Image from "next/image";
+import { FormEvent, useState } from "react";
+import { Button } from "./button";
+import DefaultUserIcon from "./default-user-icon";
 import ArrowDownIcon from "./icons/arrow-down-icon";
 import ArrowUpIcon from "./icons/arrow-up-icon";
-import { useState, useRef, useEffect, FormEvent } from "react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/id";
-import AutoExpandingTextarea from "./auto-expanding-textarea";
-import useMutateCreateBookmark from "@/hooks/api/bookmarks/useMutateCreateBookmark";
-import useMutateVotePost from "@/hooks/api/posts/useMutateVotePost";
-import useMutateDownvotePost from "@/hooks/api/posts/useMutateDownvotePost";
-import { Button } from "./button";
-import { UserAvatar } from "@/model/user-type";
-import DefaultUserIcon from "./default-user-icon";
-import Image from "next/image";
-import useLineLimit from "@/hooks/useLineLimit";
-import useMutateDeleteBookmark from "@/hooks/api/bookmarks/useMutateDeleteBookmark";
-import useQueryPostsComments from "@/hooks/api/posts/useQueryPostComments";
-import PostComment from "./post-comment";
-import useMutateCreatePostComment from "@/hooks/api/posts/useMutateCreatePostComment";
 import { Input } from "./input";
-
-dayjs.extend(relativeTime);
-dayjs.locale("id");
+import PostComment from "./post-comment";
 
 interface ICardPost {
   id: string;

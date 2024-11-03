@@ -1,3 +1,5 @@
+"use client";
+
 import BottomNav from "@/components/shared/bottom-nav";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
