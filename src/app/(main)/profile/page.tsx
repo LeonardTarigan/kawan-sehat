@@ -36,7 +36,7 @@ export default function ProfilePage() {
         <section className="flex justify-between gap-10">
           <div>
             {user?.avatar === "NONE" ? (
-              <DefaultUserIcon />
+              <DefaultUserIcon containerClassName="size-20 -mt-10" />
             ) : (
               <div className="relative -mt-10 mb-2 size-20">
                 <Image
@@ -101,6 +101,9 @@ export default function ProfilePage() {
                 total_comment={total_comments}
                 topic_name={topic.name}
                 created_at={created_at}
+                vote_total={vote.total}
+                vote_status={vote.state}
+                avatar={account.avatar}
               />
             ),
           )}

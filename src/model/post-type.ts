@@ -1,8 +1,12 @@
 import { IPagination } from "./general-type";
+import { UserAvatar } from "./user-type";
+
+export type VoteState = -1 | 0 | 1;
 
 export interface IPostAccount {
   id: string;
   username: string;
+  avatar: UserAvatar;
 }
 
 export interface IPostTopic {
@@ -12,7 +16,7 @@ export interface IPostTopic {
 
 export interface IPostVote {
   total: number;
-  state: number;
+  state: VoteState;
 }
 
 export interface IPost {

@@ -68,3 +68,41 @@ export async function createPostBookmark(id: string) {
   const data = await res.json();
   return data;
 }
+
+export async function votePost(id: string) {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(baseUrl + `/posts/${id}/upvote`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}
+
+export async function downVotePost(id: string) {
+  const token = (await cookies()).get("token")?.value;
+
+  const res = await fetch(baseUrl + `/posts/${id}/downvote`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error ${res.status}: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  return data;
+}

@@ -59,6 +59,9 @@ export default function SectionPosts() {
               total_comment={total_comments}
               topic_name={topic.name}
               created_at={created_at}
+              vote_total={vote.total}
+              vote_status={vote.state}
+              avatar={account.avatar}
             />
           ),
         )}
