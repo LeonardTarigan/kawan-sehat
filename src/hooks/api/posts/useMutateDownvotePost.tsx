@@ -9,7 +9,6 @@ export default function useMutateDownvotePost() {
     mutationKey: ["downvote-post"],
     mutationFn: async (id: string) => downVotePost(id),
     onSuccess: () => {
-      toast.success("Downvote berhasil");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: () => {

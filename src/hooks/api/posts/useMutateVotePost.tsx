@@ -9,7 +9,6 @@ export default function useMutateVotePost() {
     mutationKey: ["vote-post"],
     mutationFn: async (id: string) => votePost(id),
     onSuccess: () => {
-      toast.success("Vote berhasil");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: () => {
