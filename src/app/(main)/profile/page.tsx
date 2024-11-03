@@ -3,18 +3,26 @@
 import { Button } from "@/components/shared/button";
 import useMounted from "@/hooks/useMounted";
 import useUserAccount from "@/hooks/useUserAccount";
-import { ClipboardPlusIcon, LogOutIcon, UserRoundPenIcon } from "lucide-react";
+import {
+  ClipboardPlusIcon,
+  LogOutIcon,
+  UserRoundIcon,
+  UserRoundPenIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import useQueryPosts from "@/hooks/api/posts/useQueryPosts";
+import CardPost from "@/components/shared/card-post";
+import DefaultUserIcon from "@/components/shared/default-user-icon";
 
 export default function ProfilePage() {
   const isMounted = useMounted();
   const router = useRouter();
   const user = useUserAccount();
 
-  if (!isMounted) return;
+  const { data } = useQueryPosts({ account_id: user?.id! });
 
   const handleLogout = () => {
     Cookies.remove("token");
@@ -23,17 +31,27 @@ export default function ProfilePage() {
     router.push("/auth/login");
   };
 
+  if (!isMounted) return;
+
   return (
-    <main>
+    <main className="pb-32">
       <section className="h-32 w-full bg-gradient-to-r from-primary-500 via-primary-400 to-primary-500"></section>
 
       <div className="space-y-5 px-5">
         <section className="flex justify-between gap-10">
           <div>
-            <div className="relative -mt-10 mb-2 size-20">
-              <Image src={`/img/${user?.avatar}.png`} alt="User Avatar" fill />
-            </div>
-            <h2 className="text-xl font-bold">{user?.full_name}</h2>
+            {user?.avatar === "NONE" ? (
+              <DefaultUserIcon />
+            ) : (
+              <div className="relative -mt-10 mb-2 size-20">
+                <Image
+                  src={`/img/${user?.avatar}.png`}
+                  alt="User Avatar"
+                  fill
+                />
+              </div>
+            )}
+            <h2 className="line-clamp-1 text-xl font-bold">{user?.username}</h2>
             <p>{user?.email}</p>
           </div>
           <Button
@@ -58,6 +76,38 @@ export default function ProfilePage() {
               <span>Riwayat Penyakit</span>
             </Button>
           </Link>
+        </section>
+        {data?.data.posts.length === 0 && (
+          <div className="flex w-full flex-col items-center justify-center gap-2 pt-10">
+            <div className="relative aspect-square w-2/3">
+              <Image src={"/img/no-post.png"} alt="User Avatar" fill />
+            </div>
+            <p className="text-primary-300">Belum ada postingan</p>
+          </div>
+        )}
+        <section className="mt-5 space-y-2">
+          {data?.data.posts.map(
+            ({
+              id,
+              title,
+              account,
+              content,
+              total_comments,
+              vote,
+              topic,
+              created_at,
+            }) => (
+              <CardPost
+                key={id}
+                title={title}
+                username={account.username}
+                content={content}
+                total_comment={total_comments}
+                topic_name={topic.name}
+                created_at={created_at}
+              />
+            ),
+          )}
         </section>
       </div>
     </main>

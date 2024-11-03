@@ -1,5 +1,6 @@
 "use client";
 
+import { login } from "@/actions/auth-service";
 import { Button } from "@/components/shared/button";
 import {
   Form,
@@ -10,7 +11,6 @@ import {
 } from "@/components/shared/form";
 import { Input } from "@/components/shared/input";
 import { IErrorResponse } from "@/model/general-type";
-import { AuthApi } from "@/repository/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import Image from "next/image";
@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   async function onSubmit(values: LoginFormSchema) {
     try {
-      const { data, error } = await AuthApi.login(values);
+      const { data, error } = await login(values);
 
       if (error) {
         toast.error(error);

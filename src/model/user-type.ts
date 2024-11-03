@@ -1,19 +1,21 @@
-export interface IUserAccount {
-  id: string;
-  full_name: string;
-  username: string;
-  nik: string;
-  email: string;
-  gender: string;
-  role: string;
-  avatar: string;
-}
-
-type UserAvatar =
+export type UserAvatar =
   | "NONE"
   | "OLD_FEMALE"
   | "OLD_MALE"
   | "YOUNG_FEMALE"
   | "YOUNG_MALE";
 
-type UserGender = "UNSPECIFIED" | "MALE" | "FEMALE";
+export type UserGender = "UNSPECIFIED" | "MALE" | "FEMALE";
+
+export type UserRole = "PATIENT" | "EXPERT" | "ADMIN";
+
+export interface IUserAccount {
+  id: string;
+  full_name: string;
+  username: string;
+  nik: string;
+  email: string;
+  gender: UserGender;
+  role: UserRole;
+  avatar: UserAvatar;
+}

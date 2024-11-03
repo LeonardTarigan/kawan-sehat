@@ -1,5 +1,6 @@
 "use client";
 
+import { register } from "@/actions/auth-service";
 import { Button } from "@/components/shared/button";
 import {
   Form,
@@ -10,7 +11,6 @@ import {
 } from "@/components/shared/form";
 import { Input } from "@/components/shared/input";
 import { IErrorResponse } from "@/model/general-type";
-import { AuthApi } from "@/repository/services/auth-service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -43,7 +43,7 @@ export default function RegisterPage() {
 
   async function onSubmit(values: RegisterFormSchema) {
     try {
-      await AuthApi.register(values);
+      await register(values);
 
       toast.success("Registrasi akun berhasil");
 

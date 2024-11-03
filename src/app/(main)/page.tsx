@@ -3,6 +3,7 @@
 import { Button } from "@/components/shared/button";
 import CardPost from "@/components/shared/card-post";
 import SearchIcon from "@/components/shared/icons/search-icon";
+import useQueryTopics from "@/hooks/api/topics/useQueryTopics";
 import useMounted from "@/hooks/useMounted";
 import useUserAccount from "@/hooks/useUserAccount";
 import Link from "next/link";
@@ -10,6 +11,8 @@ import Link from "next/link";
 export default function Home() {
   const isMounted = useMounted();
   const user = useUserAccount();
+
+  const { data: topics } = useQueryTopics();
 
   if (!isMounted) return;
 
@@ -33,19 +36,19 @@ export default function Home() {
         </Link>
       </section>
       <section className="flex w-full gap-5 overflow-scroll">
-        {[...Array(10)].map((_, index) => (
+        {topics?.data.topics.map(({ id, name }, index) => (
           <div
-            key={index}
-            className={`rounded-full bg-white px-5 py-2 ${index === 0 && "ml-5"}`}
+            key={id}
+            className={`whitespace-nowrap rounded-full bg-white px-5 py-2 ${index === 0 && "ml-5"}`}
           >
-            Insomnia
+            {name}
           </div>
         ))}
       </section>
       <section className="space-y-3 px-5">
-        {[...Array(20)].map((_, index) => (
+        {/* {[...Array(20)].map((_, index) => (
           <CardPost key={index} />
-        ))}
+        ))} */}
       </section>
     </main>
   );

@@ -4,6 +4,12 @@ export interface IResponse<T> {
   message: string;
 }
 
+export interface IPagination {
+  limit: number;
+  page: number;
+  count: number;
+}
+
 export interface IErrorResponse {
   response: {
     data: {
