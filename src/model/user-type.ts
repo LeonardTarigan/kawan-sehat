@@ -19,3 +19,11 @@ export interface IUserAccount {
   role: UserRole;
   avatar: UserAvatar;
 }
+
+export interface IEditUserPayload {
+  full_name?: string;
+  username?: string;
+  nik?: string;
+  gender?: string;
+  avatar?: string;
+}

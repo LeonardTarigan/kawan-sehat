@@ -1,7 +1,6 @@
 "use server";
 
 import { IResponse } from "@/model/general-type";
-import { ICreatePostPayload } from "@/model/post-type";
 import { ITopicList } from "@/model/topic-type";
 import { cookies } from "next/headers";
 
